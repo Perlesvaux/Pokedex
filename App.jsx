@@ -170,10 +170,10 @@ function NavBar(){
 
         {value.current.length>2 &&
             filtered.map((x)=>{
-            return <>
-                <li key={x}>{value.data[x].name}</li>
-                <PokeSnap source={value.data[x].url}/>
-              </>
+            return <li key={x}>{value.data[x].name}
+                    <PokeSnap source={value.data[x].url}/>
+                   </li>
+              
         })}
 
         </ul>
