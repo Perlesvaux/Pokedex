@@ -78,7 +78,11 @@ function Pokecard({id}){
   return (<>
     <div className="card text-white bg-danger mb-3 text-center" style={ {width:"18rem"} } >
       <h1 className="card-header" style={{color:"yellow", textShadow:"4px 2px SteelBlue", fontWeight:"heavy"}}>#{poke.id}</h1>
-      <img className="card-img-top" src={poke.sprite} alt={poke.name } style={ {borderRadius:"18px"} }></img>
+      { poke.sprite? 
+          <img className="card-img-top" src={poke.sprite} alt={poke.name } style={ {borderRadius:"18px"} }></img>
+         :
+<div className="loader"></div>
+  }
       <div className="card-body">
         <h2 className="card-title text-capitalize" >{poke.name}</h2>
 
@@ -120,9 +124,9 @@ function PokeSnap({source}){
 
   useEffect(()=>{
     pokemonImage(source)
-  })
+  }, [] )
 
-  return (<>{snap.sprite && <img src={snap.sprite}></img>}</>)
+  return (<>{snap.sprite? <img src={snap.sprite}></img> : <div className="loader"></div>}</>)
 }
 
 
@@ -134,6 +138,12 @@ function NavBar(){
   const filtered = Object.keys(value.data).filter((each)=>{
       return value.data[each].name.includes(value.current) //returns a list of indexes that match filter criteria
   })
+
+  const matches = filtered.map((x)=>{
+      return <li key={x} className="list-group-item">
+                {value.data[x].name}
+                <PokeSnap source={value.data[x].url}/>
+             </li>})
 
   function searching(event){
     setValue({...value, current:event.target.value})
@@ -166,20 +176,14 @@ function NavBar(){
         <button className="btn btn-outline-success" type="submit">Search</button>
       </form>
         
-        <ul>
-
-        {value.current.length>2 &&
-            filtered.map((x)=>{
-            return <li key={x}>{value.data[x].name}
-                    <PokeSnap source={value.data[x].url}/>
-                   </li>
-              
-        })}
-
-        </ul>
 
   </div>
 </nav>
+        <ul className="list-group">
+
+        {value.current.length>2 && matches}
+
+        </ul>
   </>)
 }
 
