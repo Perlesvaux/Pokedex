@@ -1,13 +1,9 @@
-"use strict";
+// import { useState, useEffect } from 'react'
+// import './App.css'
+import './App.css'
 
-import React, {
-   StrictMode,
-   useState,
-   createContext,
-   useContext,
-   useEffect
-} from "https://esm.sh/react?dev";
-import { createRoot } from "https://esm.sh/react-dom/client?dev";
+import { StrictMode, useState, createContext, useContext, useEffect} from 'react';
+// import { createRoot } from "https://esm.sh/react-dom/client?dev";
 
 
 function Pokecard({ id }) {
@@ -47,11 +43,6 @@ function Pokecard({ id }) {
       {
          const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
          const data = await res.json()
-         // setPoke({id: data.id, name:data.name, sprite:data.sprites.front_default})
-         // const moves = []
-         // for (let x in data.moves) moves.push(data.moves[x])
-         // return {id: data.id, name:data.name, sprite:data.sprites.front_default, moves:moves }
-
          const four_moves = pickFour(data.moves)
          return { id: data.id, name: data.name, sprite: data.sprites.front_default, moves: four_moves }
 
@@ -63,20 +54,8 @@ function Pokecard({ id }) {
    }
 
    useEffect(() => {
-      // const elpepe = await requestPokemon()
       (async () => setPoke(await requestPokemon()))()
    }, [])
-
-   // function test(){
-   //   // for (let x in poke.moves) console.log(poke.moves[x])
-   //   if (poke.moves)
-   // {
-   //     // if (Object.keys(poke.moves).length>1) console.log(poke.moves[1])
-   //     console.log(typeof poke.moves)
-   //   }
-   // }
-
-   // test()
 
 
    return (<>
@@ -108,40 +87,13 @@ function Pokecard({ id }) {
 
 
    </>)
-   // Object.keys(poke.moves).map((index)=>(<a className="dropdown-item" href="#" key={index}>{poke.moves[index].move.name}</a>))
 }
-
-
-function PokeSnap({ source }) {
-   const [snap, setSnap] = useState({ sprite: "" })
-
-   async function pokemonImage(imageUrl) {
-      try
-      {
-         const res = await fetch(imageUrl)
-         const data = await res.json()
-
-         setSnap({ sprite: data.sprites.front_default })
-      } catch (error)
-      {
-         console.log(error)
-      }
-   }
-
-   useEffect(() => {
-      pokemonImage(source)
-   }, [])
-
-   return (<>{snap.sprite ? <img src={snap.sprite}></img> : <div className="loader"></div>}</>)
-}
-
-
 
 
 function NavBar() {
    const [cachedPokes, setCachedPokes] = useState([])
 
-   const [value, setValue] = useState({ current: "", firstInteraction: 0, data: {} })
+   const [value, setValue] = useState({ current: "", data: {} })
 
    useEffect(() => {
       if (value.current.length < 3) return
@@ -152,6 +104,7 @@ function NavBar() {
             .filter(num => value.data[num].name.includes(value.current))
 
          const uncachedPokes = []
+        console.log(filtered)
 
          for (const num of filtered)
          {
@@ -171,6 +124,7 @@ function NavBar() {
 
             uncachedPoke.sprite = sprite
             uncachedPokes.push(uncachedPoke)
+          
          }
 
          setCachedPokes(prev => prev.concat(uncachedPokes))
@@ -204,7 +158,7 @@ function NavBar() {
       <>
          <nav className="navbar sticky-top navbar-light bg-light">
             <div className="container-fluid">
-               <a className="navbar-brand" href="#">Sticky top</a>
+               <a className="navbar-brand" href="#">PokéDex</a>
 
                <form className="d-flex">
                   <input className="form-control me-2" type="search" placeholder="Look for a Pokemon" aria-label="Search" value={value.current} onChange={searching} />
@@ -249,4 +203,5 @@ function App() {
 }
 
 
-createRoot(document.getElementById("root")).render(<App />);
+export default App
+// createRoot(document.getElementById("root")).render(<App />);
